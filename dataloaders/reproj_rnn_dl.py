@@ -124,9 +124,10 @@ class Reproj_Dataset(Dataset):
     ##
     ######################################################################################
     def __getitem__(self, index):
-      direction = self.sequencing["direction_of_travel"]
 
       if self.sequencing is not None:
+        direction = self.sequencing["direction_of_travel"]
+        
         if len(self.used_frames_seqs) == 1:
           self.used_frames = self.used_frames_seqs[0]
         else:
@@ -280,7 +281,7 @@ class Reproj_Dataset(Dataset):
       md = self.getImageMetadataFromIdx(index)
       ds_img_path = self.dataset_rel_path(md['path'])
       img_path = self._root_dir / ds_img_path
-      return Image.open(img_path.parent / 'depth' / img_path.name)
+      return Image.open(img_path.parent / self.depth_rel_path / img_path.name)
 
     def csv_odom_to_transforms(self, path):
       odom_tfs = {}
