@@ -1,0 +1,85 @@
+experiment_id: sb20
+network:
+  model: gru_reproj_segmentation
+  pretrained: false
+  pretrained_path: 'path/to/pretrained/model.ckpt'
+  unet_base_pretrained: false
+  unet_pretrained_path: 'path/to/pretrained/unet/model.ckpt'
+  
+  prior:
+    spatial_enable: true
+    # options [encoder_[0, 1, 2, 3], decoder_[3, 2, 1, 0_B, 0_A]
+    layers:
+    - decoder_0_B
+    - decoder_1
+    default_value: 0.1
+
+trainer:
+  num_gpus: 2
+  val_every_n_epochs: 5
+  max_epochs: 500
+  precision: 32
+  save_checkpoints:
+    enable: true
+    path: "checkpoints/save/path/"
+    every_n_val_epochs: 20
+    best_metric: val_epoch_iou_wavg
+    best_metric_mode: max
+  early_stopping:
+    enable: True
+    monitor_metric: 'val_epoch_loss'
+    mode: 'min'
+    min_delta: 0.001
+    patience: 5
+    strict: True
+    verbose: True
+logger:
+  log_path: "logs/save/path/"
+  log_lr: true
+  log_cfg_file: true
+  tb_enable: true
+  csv_enable: true
+
+optimizer:
+  # -- Oprimization algorithm --
+  # options [Adam, SGD, RMSProp]
+  type: Adam 
+  momentum: 0.8
+  alpha: 0.9
+  # -- LR-scheduler --
+  # options [StepLR, CyclicLR]
+  lr_scheduler: StepLR
+  base_lr: 0.001
+  max_lr: 0.01
+  step_size: 10
+  gamma: 0.8
+  cycle_momentum: true
+  # -- Loss --
+  # options [xentropy, dice, foce, BEC]
+  loss_type: xentropy # options [xentropy, dice, foce, BEC]
+
+dataset:
+  yaml_path: "path/to/dataset/file.yaml"
+  class_labels:
+  - bg
+  - crop
+  - weed
+  class_weights:
+  - 1.4222778260019158
+  - 18.099156678443368
+  - 9.652930311746358
+
+dataloader:
+  name: SB_20
+  batch_size: 3
+  accumulate_grad_batches: 1
+  workers_num: 8
+  
+  sequencing:
+    # options [wheel, rgbd]
+    odom_source: 'rgbd'
+
+    direction_of_travel: 1
+    random_frame_skips: True
+    max_skip: 1
+    num_frames: 5
