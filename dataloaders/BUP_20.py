@@ -6,5 +6,8 @@ class Parser(BaseParser):
     super().__init__(cfg)
 
     if self.sequencing is not None:
-      self.sequencing['odometry_rel_file_path'] = 'odometry.csv'
+      if self.sequencing['odom_source'] == 'rgbd':
+        self.sequencing['odometry_rel_file_path'] = 'rgbd_odom.csv'
+      else:
+        self.sequencing['odometry_rel_file_path'] = 'odometry.csv'
     self.depth_rel_path='depth'
