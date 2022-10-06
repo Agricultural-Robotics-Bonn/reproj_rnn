@@ -13,7 +13,7 @@ trainer:
     enable: true
     path: "checkpoints/save/path/"
     every_n_val_epochs: 20
-    best_metric: val_epoch_iou_pepper
+    best_metric: val_epoch_iou_wavg
     best_metric_mode: max
   early_stopping:
     enable: True
@@ -61,6 +61,6 @@ dataset:
 
 dataloader:
   name: SB_20
-  batch_size: 3
+  batch_size: 2
   accumulate_grad_batches: 1
   workers_num: 8

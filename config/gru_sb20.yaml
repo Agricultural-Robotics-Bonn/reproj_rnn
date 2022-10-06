@@ -10,8 +10,8 @@ network:
     spatial_enable: true
     # options [encoder_[0, 1, 2, 3], decoder_[3, 2, 1, 0_B, 0_A]
     layers:
-    - decoder_0_B
     - decoder_1
+    - decoder_2
     default_value: 0.1
 
 trainer:
@@ -71,7 +71,7 @@ dataset:
 
 dataloader:
   name: SB_20
-  batch_size: 3
+  batch_size: 2
   accumulate_grad_batches: 1
   workers_num: 8
   
