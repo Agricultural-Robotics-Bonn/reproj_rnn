@@ -25,17 +25,13 @@ models_path = Path(__file__).parent.absolute()
               '-d',
               type=str,
               default='')
-@click.option('--short_dev_test_only',
-              '-t',
-              is_flag=True)
-def main(config, gpus, data_path, short_dev_test_only):
+def main(config, gpus, data_path):
     # load config file
     with open(config, 'r') as fid:
         cfg = yaml.safe_load(fid)#, Loader=yaml.FullLoader)
     
     if data_path: cfg['dataset']['yaml_path'] = data_path
 
-    if short_dev_test_only: cfg['debugger']['fast_dev_run'] = True
 
     test_model(cfg, gpus)
 
@@ -122,7 +118,7 @@ def test_model(cfg, gpus):
     #################################
     ### debugger
     #################################
-    if cfg['debugger']['enable']:
+    if 'debugger' in cfg and cfg['debugger']['enable']:
         callbacks.append(NetDebugger(cfg))     
 
     trainer = Trainer(gpus=gpus,
@@ -130,8 +126,6 @@ def test_model(cfg, gpus):
                       
                       logger=loggers,
                       callbacks=callbacks,
-                      
-                      fast_dev_run=cfg['debugger']['fast_dev_run'],
                       )
 
     # save config file in log directory now that the trainer is configured and ready to run
