@@ -32,6 +32,12 @@ def main(config, gpus, data_path):
     
     if data_path: cfg['dataset']['yaml_path'] = data_path
 
+    if not cfg['network']['pretrained'] and not 'resume_from_ckpt' in cfg['trainer'].keys():
+        try:
+            cfg['network']['pretrained'] = True
+            cfg['network']['pretrained_path'] = str([p for p in (Path(config).parent / 'checkpoints').iterdir() if 'best' in str(p)][0])
+        except:
+            raise FileExistsError('No pretrained model was specified and unable to find best pretrained model in parent directory of config file.')
 
     test_model(cfg, gpus)
 
@@ -43,10 +49,6 @@ def test_model(cfg, gpus):
     experiment_name = f'{cfg["network"]["model"]}{experiment_id}_test_{timestamp}'
 
     print(f'\n####\nRunning experiment:\n{experiment_name}\n####\n')
-
-
-    if not cfg['network']['pretrained'] and not 'resume_from_ckpt' in cfg['trainer'].keys():
-        raise ValueError('Neither pretrained path nor resume_from_ckpt specified in config file. Unable to test model')
 
     #################################
     ### Load Model
@@ -109,7 +111,7 @@ def test_model(cfg, gpus):
                                           version=csv_log_version)
         loggers.append(csv_logger)
 
-    if cfg['logger']['test_output_enable']:
+    if 'test_output_enable' in cfg['logger'] and cfg['logger']['test_output_enable']:
         test_out_path = Path(cfg['logger']['test_output_log_path']) if 'test_output_log_path' in cfg['logger'].keys() else Path(cfg['logger']['log_path']) / experiment_name / 'output'
         callbacks.append(TestOutputLogger(str(test_out_path)))
 
