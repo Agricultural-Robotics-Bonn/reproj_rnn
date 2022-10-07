@@ -10,12 +10,13 @@ python3 -m venv ".venv"
 pip install --upgrade pip
 pip install -r requirements.txt
 
-bash get_bup20.sh           # ~70GB
-bash get_st_atte_model.sh   # ~500MB
+bash get_bup20.sh                 # ~70GB
+bash get_st_atte_model_bup20.sh   # ~500MB
 
-python test.py trained_models/st_atte_bup20/config.yaml\
-               -g 1 \
-               --data_path ~/datasets/CKA_sweet_pepper_2020_summer/CKA_sweet_pepper_2020_summer.yaml
+python test.py \
+  trained_models/st_atte_bup20/config.yaml \
+  -g 1 \
+  --data_path ~/datasets/CKA_sweet_pepper_2020_summer/CKA_sweet_pepper_2020_summer.yaml
 
 ```
 
