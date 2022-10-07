@@ -1,16 +1,8 @@
-from re import S
 import warnings
 
 import torch
 import torch.nn.functional as F
 
-import kornia
-from skimage import draw
-
-from modules.reprojectorch import ReprojMaskToShiftMatrix
-from modules.reprojectorch import mask_to_pts, pts_to_mask
-
-from typing import List, Set, Dict, Tuple, Optional
 
 from contextlib import contextmanager
 @contextmanager
@@ -177,25 +169,6 @@ def shiftTensor(features, shiftMat, mask, default_value=0.1):
     feat_shifted[tuple((feat_flat[:,:3].T.type(torch.int)).detach().cpu().numpy())] = feat_flat[:,4:]
     # Move channels dimention back to pytorch's default and return
     return torch.movedim(feat_shifted,-1,1)
-
-
-def dilate_mask(mask, kernel_size=3, kernel_shape=None):
-  if kernel_size == 0:
-    return mask
-  kernel_size = round_kernel_size(kernel_size)
-  
-  if kernel_shape == 'disk':
-    kernel = torch.zeros(kernel_size,kernel_size)
-    kernel[draw.disk(((kernel_size-1)/2,(kernel_size-1)/2),kernel_size/2)] = 1
-  elif kernel_shape == 'diamond':
-    kernel = torch.zeros(kernel_size,kernel_size)
-    r = np.array([0, (kernel_size-1)/2, kernel_size-1, (kernel_size-1)/2])
-    c = np.array([(kernel_size-1)/2, 0, (kernel_size-1)/2, kernel_size-1])
-    kernel[draw.polygon(r,c)] = 1
-  else:
-    kernel = torch.ones(kernel_size,kernel_size)
-  
-  return torch.clamp(kornia.morphology.dilation(mask, kernel.to(mask.device)), 0,1)
 
 ###
 # image debugging
