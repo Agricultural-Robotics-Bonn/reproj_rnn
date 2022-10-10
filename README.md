@@ -14,6 +14,7 @@
 
 To be presented at IROS 2022 (Best AgRobotics Paper Nomination)
 
+<img src='imgs/stNetworks._simplified.png'/>
 
 ## TL;DR - Test Pre-Trained model
 
@@ -40,8 +41,52 @@ If all went well, you should get the list of all metrics when the model finishes
 
 ## How does it work?
 
+<img src='imgs/reprojLayer.png'/>
+
 ## Setup
-## Train your own
+
+Tested on Ubuntu 18.06; CUDA 11.3
+
+### Pre-requisites
+```
+sudo apt-get update
+sudo apt-get -y upgrade
+sudo apt-get install -y python3-pip
+sudo apt-get install build-essential libssl-dev libffi-dev python-dev
+sudo apt-get install -y python3-venv
+```
+
+Install [CUDA and cuDDN](https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html).
+
+### Python virtual environment setup
+
+```
+python3 -m venv ".venv"
+. .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+## Datasets used
+## Train your own model
+
+Folder `./config` has several `yaml` config examples used in the paper that can be used as examples
+```
+python train.py \  
+  -g [num_gpus] \
+  --out_path /net/outputs/save/path
+  --log_path /train/logs/save/path
+  --ckpt_path /model/checkpoints/save/path
+  --data_path /dataset/yaml/file/location
+```
+The training spript uses [`PytorchLightning` DDP](https://pytorch-lightning.readthedocs.io/en/1.4.0/advanced/multi_gpu.html#distributed-data-parallel) pluging for multi GPU training.
+
+**Note**: The training process is quiet memory intensive due to the recurrent nature of the models (trained on Nvidia RTX A6000). I case you get an out of memory error, try making the following changes to your `yaml` config file:
+  - Reduce `dataloader/batch_size`
+  - Reduce `dataloader/sequencing/num_frames` to use shorter frame sequences
+  - Set `/trainet/precision` to 16 
+
+This would likely give you different results from the ones reported in the paper but, you'll be able to train the model on you own.
 
 ### Prepare your own dataset
 One easy way to 
