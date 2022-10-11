@@ -63,7 +63,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 ## How does it work?
-We propose a Spatial-Temporal fusion (ST-Fusion) layer that spatially registers feature maps throughout a sequence of frames.
+We propose a Spatial-Temporal fusion layer (ST-Fusion) that spatially registers feature maps throughout a sequence of frames.
 It leverages spatial-temporal information commonly available in agricultural robots (RGB-D images & robot poses) and leverages multi-view geometry to re-project complete tensors between frames, at any given depth of a deep convolutional neural network.  
 
 <img src='imgs/reprojLayer.png'/>
@@ -74,6 +74,9 @@ Moreover, since it is desirable to fuse information at different scales fo the n
 
 In this repository the available tensor fusion methods are [px-wise attention](https://arxiv.org/abs/1808.03833) (`models/rnn_avg_attention_reproj_segmentation`) and [Conv-GRUs](https://arxiv.org/abs/1511.06432) (`models/gru_reproj_segmentation`).
 
+### Training details
+
+We train our models with sequences of N frames as samples, and a batch is a set of these sequences. These include RGB-D images and associated camera/robot odometry. A limitation of temporal models is that they are generally trained and evaluated on consistent framerates. However, real-world systems need to deal with variable framerate as well as frame drops and jitter. Therefore, we train our models on sequences with artificial frame drops and jitter with monotonously increasing indices (see our [paper](https://arxiv.org/pdf/2206.13406.pdf) for more details).
 ## Datasets used
 We evaluate our ST-Fusion layer in a segmentation task in two challenging agricultural datasets:
 
