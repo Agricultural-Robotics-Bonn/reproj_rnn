@@ -79,6 +79,15 @@ We evaluate our ST-Fusion layer in a segmentation task in two challenging agricu
 
 ### Horticulture glasshouse - sweet pepper ([BUP20](http://agrobotics.uni-bonn.de/sweet_pepper_dataset/))
 
+A dataset consisting of video sequences from a glasshouse environment in campus Klein-Altendorf (CKA), with two sweet pepper cultivar *Mavera* (yellow) and *allrounder* (red), each cultivar matured from green, to mixed, to their primary color.This data, which contains all the colors, was captured by the autonomous phenotyping platform [PATHoBot](https://arxiv.org/abs/2010.16272) driving at 0.2 m/s.
+The dataset comprises 10 sequences of 6 crop-rows, captured using Intel RealSense D435i cameras recording RGB-D images, as well as wheel & RGB-D refined odometry.
+
+Below is a sumary of the dataset characteristics
+
+| Image size | Images type | Robot Pose | FPS | Train | Val.  | Eval. |
+|------|---|---|---|---|--|--|
+|      1280 x 720| RGB-D | wheel & RGB-D odometry | 15  |  124 | 62  | 93  |
+
 <img src='imgs/bup20_data.png'/>
 
 Donwload the dataset (~70GB):
@@ -86,6 +95,16 @@ Donwload the dataset (~70GB):
 bash scripts/get_sb20.sh
 ```
 ### Arable farming - sugar beet ([SB20](http://agrobotics.uni-bonn.de/sugar_beet2020/))
+
+This dataset was captured at a sugar beet field in CKA of the University of Bonn using an Intel RealSense D435i camera with a nadir view of the ground mounted on [BonnBot-I](https://arxiv.org/abs/2109.11936) driving at 0.4 m/s. 
+
+Sequences contain robot wheel odometry and RGB-D images of crops and 8 different categories of weeds at different growth stages, different illumination conditions and three herbicide treat-ment regimes (30%, 70%, 100%), impacting weed density directly. 
+
+Below is a sumary of the dataset characteristics
+
+| Image size | Images type | Robot Pose | FPS | Train | Val.  | Eval. |
+|------|---|---|---|---|--|--|
+|      640 x 480| RGB-D | wheel & RGB-D odometry | 15  |  71 | 37  | 35  |
 
 <img src='imgs/sb20_data.png'/>
 
