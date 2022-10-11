@@ -128,7 +128,7 @@ python train.py \
 ```
 The training script uses [`PytorchLightning` DDP](https://pytorch-lightning.readthedocs.io/en/1.4.0/advanced/multi_gpu.html#distributed-data-parallel) plugin for multi GPU training.
 
-**Note**: The training process is quiet memory intensive due to the recurrent nature of the models (trained on Nvidia RTX A6000). I case you get an out of memory error, try making the following changes to your `yaml` config file:
+**Note**: The training process is quite memory intensive due to the recurrent nature of the models (trained on Nvidia RTX A6000). In case you get an out of memory error, try making the following changes to your `yaml` config file:
   - Reduce `dataloader/batch_size`
   - Reduce `dataloader/sequencing/num_frames` to use shorter frame sequences
   - Set `/trainer/precision` to 16 
