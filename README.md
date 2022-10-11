@@ -25,8 +25,8 @@ python3 -m venv ".venv"
 pip install --upgrade pip
 pip install -r requirements.txt
 
-bash get_bup20.sh                 # ~70GB
-bash get_st_atte_model_bup20.sh   # ~500MB
+bash scripts/get_bup20.sh                 # ~70GB
+bash scripts/get_st_atte_model_bup20.sh   # ~500MB
 
 python test.py \
   trained_models/st_atte_bup20/config.yaml \
@@ -38,10 +38,6 @@ python test.py \
 If all went well, you should get the list of all metrics when the model finishes testing.
 
 **Note**: Change the torch version in the `requirements.txt` file according to your CUDA version in case you get version errors
-
-## How does it work?
-
-<img src='imgs/reprojLayer.png'/>
 
 ## Setup
 
@@ -66,8 +62,38 @@ python3 -m venv ".venv"
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
+## How does it work?
+We propose a Spatial-Temporal fusion (ST-Fusion) layer that spatialy registers feature maps throughout a sequence of frames.
+It leverages spatial-temporal information commonly available in agricultural robots (RGB-D images & robot poses) and leverages multy view geometry to reproject complete tensors between frames, at any given depth of a deep convolutional neural network.  
+
+<img src='imgs/reprojLayer.png'/>
+
+This layer computes a pixel-wise shift matrix using the depth image from a previous frame and robot trajectory (S<sup>-</sup> Spatial Prior).
+
+Moreover, since it is desirable to fuse information at different scales fo the network, the shift matrix can be interpolated to the corresponding tensor size to perform registration (see our [paper](https://arxiv.org/pdf/2206.13406.pdf) for more details). This matrix is used to register a prior recurrent feature map (T<sup>-</sup> Temporal Prior) to the feature maps of the current frame, which can then finally be fused together.
+
+In this repository the available tensor fusion methods are [px-wise attention](https://arxiv.org/abs/1808.03833) (`models/rnn_avg_attention_reproj_segmentation`) and [Conv-GRUs](https://arxiv.org/abs/1511.06432) (`models/gru_reproj_segmentation`).
 
 ## Datasets used
+We evaluate our ST-Fusion layer in a segmentation task in two challenging agricultural datasets:
+
+### Horticulture glasshouse - sweet pepper ([BUP20](http://agrobotics.uni-bonn.de/sweet_pepper_dataset/))
+
+<img src='imgs/bup20_data.png'/>
+
+Donwload the dataset (~70GB):
+```
+bash scripts/get_sb20.sh
+```
+### Arable farming - sugar beet ([SB20](http://agrobotics.uni-bonn.de/sugar_beet2020/))
+
+<img src='imgs/sb20_data.png'/>
+
+
+Download the dataset (~9GB):
+```
+bash scripts/get_sb20.sh
+```
 ## Train your own model
 
 Folder `./config` has several `yaml` config examples used in the paper that can be used as examples
