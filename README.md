@@ -74,11 +74,13 @@ Moreover, since it is desirable to fuse information at different scales fo the n
 
 In this repository the available tensor fusion methods are [px-wise attention](https://arxiv.org/abs/1808.03833) (`models/rnn_avg_attention_reproj_segmentation`) and [Conv-GRUs](https://arxiv.org/abs/1511.06432) (`models/gru_reproj_segmentation`).
 
+Finally instances of the ST-Fusion layer are interleaved in a fully convolutional segmentation pipeline at various depths of it's decoder, explicitly incorporating the Spatial-Temporal information to the mask predictions.
+
 ### Training details
 
 We train our models with sequences of N frames as samples, and a batch is a set of these sequences. These include RGB-D images and associated camera/robot odometry. A limitation of temporal models is that they are generally trained and evaluated on consistent framerates. However, real-world systems need to deal with variable framerate as well as frame drops and jitter. Therefore, we train our models on sequences with artificial frame drops and jitter with monotonously increasing indices (see our [paper](https://arxiv.org/pdf/2206.13406.pdf) for more details).
 ## Datasets used
-We evaluate our ST-Fusion layer in a segmentation task in two challenging agricultural datasets:
+We evaluate our ST-Fusion layer by inserting them on segmentation tasks segmentation task in two challenging agricultural datasets:
 
 ### Horticulture glasshouse - sweet pepper ([BUP20](http://agrobotics.uni-bonn.de/sweet_pepper_dataset/))
 
@@ -136,7 +138,7 @@ The training script uses [`PytorchLightning` DDP](https://pytorch-lightning.read
   - Reduce `dataloader/sequencing/num_frames` to use shorter frame sequences
   - Set `/trainer/precision` to 16 
 
-This would likely give you different results from the ones reported in the paper but, you'll be able to train the model on you own.
+This would likely give you different results from the ones reported in the paper but you'll be able to train the model on you own.
 
 <!-- ### Prepare your own dataset -->
 <!-- One easy way to  -->
