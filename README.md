@@ -15,6 +15,7 @@
 To be presented at IROS 2022 (**Best AgRobotics Paper Nomination**)
 
 <img src='imgs/stNetworks._simplified.png'/>
+Our novel CNN architecture that explicitly incorporates spatial-temporal cues, widely available in many agricultural robots, to improve crop monitoring tasks. 
 
 ## TL;DR - Test Pre-Trained model
 
@@ -39,6 +40,20 @@ If all went well, you should get the list of all metrics when the model finishes
 
 **Note**: Change the torch version in the `requirements.txt` file according to your CUDA version in case you get version errors
 
+## How does it work?
+We propose a Spatial-Temporal fusion layer (ST-Fusion) that spatially registers feature maps throughout a sequence of frames.
+It leverages spatial-temporal information commonly available in agricultural robots (RGB-D images & robot poses) and leverages multi-view geometry to re-project complete tensors between frames, at any given depth of a deep convolutional neural network.  
+
+<img src='imgs/reprojLayer.png'/>
+
+This layer computes a pixel-wise shift matrix using the depth image from a previous frame and robot trajectory (S<sup>-</sup> Spatial Prior).
+
+Moreover, since it is desirable to fuse information at different scales fo the network, the shift matrix can be interpolated to the corresponding tensor size to perform registration (see our [paper](https://arxiv.org/pdf/2206.13406.pdf) for more details). This matrix is used to register a prior recurrent feature map (T<sup>-</sup> Temporal Prior) to the feature maps of the current frame, which can then finally be fused together.
+
+In this repository the available tensor fusion methods are [px-wise attention](https://arxiv.org/abs/1808.03833) (`models/rnn_avg_attention_reproj_segmentation`) and [Conv-GRUs](https://arxiv.org/abs/1511.06432) (`models/gru_reproj_segmentation`).
+
+Finally instances of the ST-Fusion layer are interleaved in a fully convolutional segmentation pipeline at various depths of it's decoder, explicitly incorporating the Spatial-Temporal information to the mask predictions.
+
 ## Setup
 
 Tested on Ubuntu 18.06; CUDA 11.3
@@ -62,19 +77,6 @@ python3 -m venv ".venv"
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
-## How does it work?
-We propose a Spatial-Temporal fusion layer (ST-Fusion) that spatially registers feature maps throughout a sequence of frames.
-It leverages spatial-temporal information commonly available in agricultural robots (RGB-D images & robot poses) and leverages multi-view geometry to re-project complete tensors between frames, at any given depth of a deep convolutional neural network.  
-
-<img src='imgs/reprojLayer.png'/>
-
-This layer computes a pixel-wise shift matrix using the depth image from a previous frame and robot trajectory (S<sup>-</sup> Spatial Prior).
-
-Moreover, since it is desirable to fuse information at different scales fo the network, the shift matrix can be interpolated to the corresponding tensor size to perform registration (see our [paper](https://arxiv.org/pdf/2206.13406.pdf) for more details). This matrix is used to register a prior recurrent feature map (T<sup>-</sup> Temporal Prior) to the feature maps of the current frame, which can then finally be fused together.
-
-In this repository the available tensor fusion methods are [px-wise attention](https://arxiv.org/abs/1808.03833) (`models/rnn_avg_attention_reproj_segmentation`) and [Conv-GRUs](https://arxiv.org/abs/1511.06432) (`models/gru_reproj_segmentation`).
-
-Finally instances of the ST-Fusion layer are interleaved in a fully convolutional segmentation pipeline at various depths of it's decoder, explicitly incorporating the Spatial-Temporal information to the mask predictions.
 
 ### Training details
 
