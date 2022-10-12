@@ -15,7 +15,8 @@
 To be presented at IROS 2022 (**Best AgRobotics Paper Nomination**)
 
 <img src='imgs/stNetworks._simplified.png'/>
-Our novel CNN architecture that explicitly incorporates spatial-temporal cues, widely available in many agricultural robots, to improve crop monitoring tasks. 
+
+**ReprojRNN** leverages spatial-temporal cues available in most agricultural robots to improve crop monitoring tasks. 
 
 ## TL;DR - Test Pre-Trained model
 
