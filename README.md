@@ -12,7 +12,7 @@
  [Agricultural Robotics & Engineering](http://agrobotics.uni-bonn.de/),
  Institute of Agriculture, University of Bonn
 
-To be presented at IROS 2022 (**Best AgRobotics Paper Nomination**)
+Presented at IROS 2022 (**Best AgRobotics Paper Winner!**)
 
 <img src='imgs/stNetworks._simplified.png'/>
 
