@@ -41,7 +41,7 @@ If all went well, you should get the list of all metrics when the model finishes
 
 **Note**: Change the torch version in the `requirements.txt` file according to your CUDA version in case you get version errors
 
-## How does it work?
+## Under the hood
 We propose a Spatial-Temporal fusion layer (ST-Fusion) that spatially registers feature maps throughout a sequence of frames.
 It leverages spatial-temporal information commonly available in agricultural robots (RGB-D images & robot poses) and leverages multi-view geometry to re-project complete tensors between frames, at any given depth of a deep convolutional neural network.  
 
