@@ -57,7 +57,7 @@ Finally instances of the ST-Fusion layer are interleaved in a fully convolutiona
 
 ## Setup
 
-Tested on Ubuntu 18.06; CUDA 11.3
+Tested on Ubuntu 18.04; CUDA 11.3
 
 ### Pre-requisites
 ```
