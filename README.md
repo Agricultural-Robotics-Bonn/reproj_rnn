@@ -1,7 +1,7 @@
 # Spatial-Temporal DNN for Agriculture (ReprojRNN)
 
 
-### [Paper](https://arxiv.org/pdf/2206.13406.pdf) | [Data](http://agrobotics.uni-bonn.de/data/) | [Video](https://www.youtube.com/watch?v=1CKHx6xRSA0&t=51s&ab_channel=PhenoRob)
+### [Paper](https://arxiv.org/pdf/2206.13406.pdf) | [Data](http://agrobotics.uni-bonn.de/data/) | [Video](https://www.youtube.com/watch?v=1CKHx6xRSA0&ab_channel=PhenoRob)
 
 [Explicitly incorporating spatial information to recurrent networks for agriculture](https://arxiv.org/pdf/2206.13406.pdf)  
  [**Claus Smitt**](http://agrobotics.uni-bonn.de/claus-g-smitt/),
